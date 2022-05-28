@@ -18,10 +18,12 @@ public class Main extends Application {
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
 
-        ObservableList<Country> countriesList = DBCountries.getAllCountries();
-        for (Country C : countriesList) {
-            System.out.println("Country ID: " + C.getId() + " Country Name: " + C.getName());
-        }
+//        ObservableList<Country> countriesList = DBCountries.getAllCountries();
+//        for (Country C : countriesList) {
+//            System.out.println("Country ID: " + C.getId() + " Country Name: " + C.getName());
+//        }
+
+        DBCountries.checkDateConversion();
     }
 
     public static void main(String[] args) {

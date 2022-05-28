@@ -8,6 +8,7 @@ import model.Country;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class DBCountries {
 
@@ -34,5 +35,20 @@ public class DBCountries {
         }
 
         return countryList;
+    }
+
+    public static void checkDateConversion() {
+        System.out.println("CREATE DATE TEST");
+        String sql = "SELECT Create_Date FROM Countries";
+        try {
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Timestamp ts = rs.getTimestamp("Create_Date");
+                System.out.println("CD: " + ts.toLocalDateTime().toString());
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
