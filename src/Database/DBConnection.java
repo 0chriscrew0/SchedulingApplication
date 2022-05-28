@@ -4,6 +4,7 @@ import Password.Password;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public abstract class DBConnection {
     private static final String protocol = "jdbc";
@@ -21,9 +22,16 @@ public abstract class DBConnection {
             connection = DriverManager.getConnection(jdbcUrl, userName, Password.getPassword());
             System.out.println("Connection succesful!");
         }
-        catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        catch(SQLException e) {
+            e.printStackTrace();
         }
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 
     public static void closeConnection() {
@@ -32,7 +40,7 @@ public abstract class DBConnection {
             System.out.println("Connection closed!");
         }
         catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            // do nothing
         }
     }
 }
