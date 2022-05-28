@@ -1,5 +1,6 @@
 package main;
 
+import Database.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,9 @@ public class Main extends Application {
         stage.setTitle("Login");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
+
+        // open JDBC connection
+        DBConnection.openConnection();
     }
 
     public static void main(String[] args) {
