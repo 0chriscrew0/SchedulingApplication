@@ -17,6 +17,9 @@ public class Main extends Application {
 
         // open JDBC connection
         DBConnection.openConnection();
+
+        // close JDBC connection
+        DBConnection.closeConnection();
     }
 
     public static void main(String[] args) {
