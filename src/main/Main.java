@@ -1,6 +1,7 @@
 package main;
 
 import DBAccess.DBCountry;
+import DBAccess.DBCustomer;
 import DBAccess.DBUser;
 import Database.DBConnection;
 import javafx.application.Application;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
 
+import java.sql.SQLException;
 import java.util.Locale;
 
 public class Main extends Application {
@@ -34,11 +36,11 @@ public class Main extends Application {
 //        }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // open JDBC connection
         DBConnection.openConnection();
 
-        Locale.setDefault(new Locale("fr"));
+        DBCustomer.insert("Chris Crow", "123 main st", "77344", "832-560-4444", 1);
 
         launch(args);
 

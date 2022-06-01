@@ -38,4 +38,17 @@ public class DBCustomer {
 
         return customerList;
     }
+
+    public static int insert(String name, String address, String postalCode, String phone, int divisionID) throws SQLException {
+        String sql = "INSERT INTO Customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        ps.setInt(5, divisionID);
+
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }
