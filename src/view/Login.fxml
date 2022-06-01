@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.Login"
-            prefHeight="600.0" prefWidth="800.0">
-
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Login">
+   <children>
+      <TextField fx:id="userNameField" layoutX="99.0" layoutY="261.0" />
+      <TextField fx:id="passwordField" layoutX="99.0" layoutY="342.0" />
+      <Label layoutX="99.0" layoutY="108.0" text="Login">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="99.0" layoutY="233.0" text="Username" />
+      <Label layoutX="99.0" layoutY="314.0" text="Password" />
+      <Label layoutX="99.0" layoutY="499.0" text="Location:" />
+      <Label layoutX="174.0" layoutY="499.0" text="UserLocation" />
+   </children>
 </AnchorPane>
