@@ -4,6 +4,7 @@ import DBAccess.DBUser;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,12 +32,20 @@ public class Login implements Initializable {
     }
 
     public void login(ActionEvent actionEvent) {
+        boolean validLogin = false;
         for(User U : userList) {
             if(U.getUsername().equals(userNameField.getText()) && U.getPassword().equals(passwordField.getText())) {
-                System.out.println("login successful!");
-            } else {
-                System.out.println("Login failed...");
+                validLogin = true;
+                break;
             }
+        }
+        if(validLogin) {
+            System.out.println("Login successful!");
+        } else {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Login Failed");
+            errorAlert.setContentText("Username and password combination not found.\nPlease try again.");
+            errorAlert.showAndWait();
         }
     }
 }
