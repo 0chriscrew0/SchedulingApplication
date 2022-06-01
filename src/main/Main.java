@@ -1,6 +1,7 @@
 package main;
 
-import DBAccess.DBCountries;
+import DBAccess.DBCountry;
+import DBAccess.DBUser;
 import Database.DBConnection;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -8,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Country;
+import model.User;
 
 public class Main extends Application {
     @Override
@@ -18,12 +19,17 @@ public class Main extends Application {
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
 
-//        ObservableList<Country> countriesList = DBCountries.getAllCountries();
+//        ObservableList<Country> countriesList = DBCountry.getAllCountries();
 //        for (Country C : countriesList) {
 //            System.out.println("Country ID: " + C.getId() + " Country Name: " + C.getName());
 //        }
 
-        DBCountries.checkDateConversion();
+//        DBCountry.checkDateConversion();
+
+        ObservableList<User> userList = DBUser.getAllUsers();
+        for(User U : userList) {
+            System.out.println("User ID: " + U.getUserId() + " Username: " + U.getUsername() + " Password: " + U.getPassword());
+        }
     }
 
     public static void main(String[] args) {
