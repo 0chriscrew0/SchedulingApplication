@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import model.User;
 
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -22,6 +25,9 @@ public class Login implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userList = DBUser.getAllUsers();
+
+        ZoneId z = ZoneId.systemDefault();
+        userLocation.setText(z.getId());
     }
 
     public void login(ActionEvent actionEvent) {
