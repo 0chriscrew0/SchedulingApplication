@@ -38,6 +38,8 @@ public class Main extends Application {
         // open JDBC connection
         DBConnection.openConnection();
 
+        Locale.setDefault(new Locale("fr"));
+
         launch(args);
 
         // close JDBC connection

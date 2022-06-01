@@ -56,8 +56,16 @@ public class Login implements Initializable {
             System.out.println("Login successful!");
         } else {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Login Failed");
-            errorAlert.setContentText("Username and password combination not found.\nPlease try again.");
+
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                ResourceBundle rb = ResourceBundle.getBundle("Utilities/Nat", Locale.getDefault());
+                errorAlert.setHeaderText(rb.getString("Login Failed"));
+                errorAlert.setContentText(rb.getString("Username and password combination not found.") + "\n" + rb.getString("Please try again."));
+            } else {
+                errorAlert.setHeaderText("Login Failed");
+                errorAlert.setContentText("Username and password combination not found.\nPlease try again.");
+            }
+
             errorAlert.showAndWait();
         }
     }
