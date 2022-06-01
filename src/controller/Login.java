@@ -17,6 +17,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
+    public Label loginLabel;
+    public Label locationLabel;
+    public Label usernameLabel;
+    public Label passwordLabel;
     private ObservableList<User> userList;
     public TextField userNameField;
     public TextField passwordField;
@@ -26,6 +30,15 @@ public class Login implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userList = DBUser.getAllUsers();
+
+        if(Locale.getDefault().getLanguage().equals("fr")) {
+            ResourceBundle rb = ResourceBundle.getBundle("Utilities/Nat", Locale.getDefault());
+            loginLabel.setText(rb.getString("Login"));
+            usernameLabel.setText(rb.getString("Username"));
+            passwordLabel.setText(rb.getString("Password"));
+            loginButton.setText(rb.getString("Login"));
+            locationLabel.setText(rb.getString("Location"));
+        }
 
         ZoneId z = ZoneId.systemDefault();
         userLocation.setText(z.getId());
