@@ -26,10 +26,10 @@ public class Main extends Application {
 
 //        DBCountry.checkDateConversion();
 
-        ObservableList<User> userList = DBUser.getAllUsers();
-        for(User U : userList) {
-            System.out.println("User ID: " + U.getUserId() + " Username: " + U.getUsername() + " Password: " + U.getPassword());
-        }
+//        ObservableList<User> userList = DBUser.getAllUsers();
+//        for(User U : userList) {
+//            System.out.println("User ID: " + U.getUserId() + " Username: " + U.getUsername() + " Password: " + U.getPassword());
+//        }
     }
 
     public static void main(String[] args) {
