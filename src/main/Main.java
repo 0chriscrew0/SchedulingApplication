@@ -40,7 +40,7 @@ public class Main extends Application {
         // open JDBC connection
         DBConnection.openConnection();
 
-        DBCustomer.insert("Chris Crow", "123 main st", "77344", "832-560-4444", 1);
+        DBCustomer.update(4, "Christopher Crow");
 
         launch(args);
 

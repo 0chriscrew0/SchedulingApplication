@@ -51,4 +51,14 @@ public class DBCustomer {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
+
+    public static int update(int customerID, String name) throws SQLException {
+        String sql = "UPDATE Customers SET Customer_Name = ? WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setInt(2, customerID);
+
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }
