@@ -61,4 +61,13 @@ public class DBCustomer {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
+
+    public static int delete(int customerID) throws SQLException {
+        String sql = "DELETE FROM Customers WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, customerID);
+
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }

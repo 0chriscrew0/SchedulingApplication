@@ -40,7 +40,7 @@ public class Main extends Application {
         // open JDBC connection
         DBConnection.openConnection();
 
-        DBCustomer.update(4, "Christopher Crow");
+        DBCustomer.delete(4);
 
         launch(args);
 
