@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Customer;
 import model.User;
 
 import java.sql.SQLException;
@@ -40,7 +41,8 @@ public class Main extends Application {
         // open JDBC connection
         DBConnection.openConnection();
 
-        DBCustomer.delete(4);
+        Customer c = DBCustomer.select(1);
+        System.out.println(c.getName());
 
         launch(args);
 

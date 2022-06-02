@@ -11,6 +11,22 @@ import java.sql.SQLException;
 
 public class DBCustomer {
 
+    public static Customer select(int customerID) throws SQLException {
+        String sql = "SELECT * FROM Customers WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, customerID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        String name = rs.getString("Customer_Name");
+        String address = rs.getString("Address");
+        String postalCode = rs.getString("Postal_Code");
+        String phone = rs.getString("Phone");
+        int divisionID = rs.getInt("Division_ID");
+
+        Customer c = new Customer(customerID, name, address, postalCode, phone, divisionID);
+        return c;
+    }
+
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
