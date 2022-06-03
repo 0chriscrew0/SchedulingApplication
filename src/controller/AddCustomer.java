@@ -1,5 +1,8 @@
 package controller;
 
+import DBAccess.DBCountry;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,12 +11,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import model.Country;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AddCustomer implements Initializable {
     public Button cancelButton;
@@ -23,13 +30,36 @@ public class AddCustomer implements Initializable {
     public TextField addressField;
     public TextField postalCodeField;
     public TextField phoneField;
-    public ComboBox countrySelection;
+    public ComboBox<Country> countrySelection;
     public ComboBox firstLevelDivisionSelection;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        countrySelection.setItems(DBCountry.getAllCountries());
 
+        class CountryListCell extends ListCell<Country> {
+
+            @Override
+            public void updateItem(Country item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null) {
+                    setText(item.getName());
+                }
+                else {
+                    setText(null);
+                }
+            }
+        }
+
+        countrySelection.setCellFactory(listView -> new CountryListCell());
+        countrySelection.setButtonCell(new CountryListCell());
+
+        countrySelection.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null && oldValue != newValue) {
+                System.out.println(newValue.getName());
+            }
+        });
     }
 
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
@@ -47,5 +77,9 @@ public class AddCustomer implements Initializable {
         String postalCode = postalCodeField.getText();
         String phone = phoneField.getText();
 //        int divisionID = firstLevelDivisionSelection.getSelectionModel();
+    }
+
+    public void onCountrySelect(ActionEvent actionEvent) {
+
     }
 }

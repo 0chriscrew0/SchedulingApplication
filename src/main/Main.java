@@ -41,9 +41,6 @@ public class Main extends Application {
         // open JDBC connection
         DBConnection.openConnection();
 
-        Customer c = DBCustomer.select(1);
-        System.out.println(c.getName());
-
         launch(args);
 
         // close JDBC connection

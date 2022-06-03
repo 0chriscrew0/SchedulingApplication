@@ -42,6 +42,9 @@ public class Home implements Initializable {
     }
 
     public void onAddCustomerButton(ActionEvent actionEvent) throws IOException {
+
+
+
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 1000, 630);
