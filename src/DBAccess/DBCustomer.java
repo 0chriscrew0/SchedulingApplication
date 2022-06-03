@@ -22,8 +22,9 @@ public class DBCustomer {
         String postalCode = rs.getString("Postal_Code");
         String phone = rs.getString("Phone");
         int divisionID = rs.getInt("Division_ID");
+        String division = DBFirstLevelDivision.getDivision(divisionID).getDivision();
 
-        Customer c = new Customer(customerID, name, address, postalCode, phone, divisionID);
+        Customer c = new Customer(customerID, name, address, postalCode, phone, division);
         return c;
     }
 
@@ -44,8 +45,9 @@ public class DBCustomer {
                 String postalCode = rs.getString("Postal_Code");
                 String phone = rs.getString("Phone");
                 int divisionID = rs.getInt("Division_ID");
+                String division = DBFirstLevelDivision.getDivision(divisionID).getDivision();
 
-                Customer c = new Customer(customerID, name, address, postalCode, phone, divisionID);
+                Customer c = new Customer(customerID, name, address, postalCode, phone, division);
                 customerList.add(c);
             }
         } catch(SQLException throwables) {
