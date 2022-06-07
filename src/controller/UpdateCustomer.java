@@ -3,7 +3,6 @@ package controller;
 import DBAccess.DBCountry;
 import DBAccess.DBCustomer;
 import DBAccess.DBFirstLevelDivision;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,19 +12,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.Country;
+import model.Customer;
 import model.FirstLevelDivision;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
-public class AddCustomer implements Initializable {
+public class UpdateCustomer implements Initializable {
+
     public Button cancelButton;
     public Button addButton;
+    public TextField idField;
     public TextField nameField;
     public TextField addressField;
     public TextField postalCodeField;
@@ -33,10 +33,22 @@ public class AddCustomer implements Initializable {
     public ComboBox<Country> countrySelection;
     public ComboBox<FirstLevelDivision> firstLevelDivisionSelection;
 
+    private static Customer oldCustomer = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        countrySelection.setItems(DBCountry.getAllCountries());
+        oldCustomer = Home.getSelectedCustomer();
+
+        idField.setText(String.valueOf(oldCustomer.getID()));
+        nameField.setText(oldCustomer.getName());
+        addressField.setText(oldCustomer.getAddress());
+        postalCodeField.setText(oldCustomer.getPostalCode());
+        phoneField.setText(oldCustomer.getPhone());
+
+        ObservableList<Country> countries = DBCountry.getAllCountries();
+
+        countrySelection.setItems(countries);
 
         class CountryListCell extends ListCell<Country> {
 
@@ -68,11 +80,28 @@ public class AddCustomer implements Initializable {
 
         countrySelection.setCellFactory(listView -> new CountryListCell());
         countrySelection.setButtonCell(new CountryListCell());
-        countrySelection.getSelectionModel().selectFirst();
-        firstLevelDivisionSelection.setItems(DBFirstLevelDivision.getFirstLevelDivisionsByCountry(countrySelection.getValue().getId()));
-        firstLevelDivisionSelection.getSelectionModel().selectFirst();
+        try {
+            FirstLevelDivision f = DBFirstLevelDivision.getDivision(oldCustomer.getDivisionID());
+            countrySelection.getSelectionModel().select(DBCountry.getCountry(f.getCountryID()).getId() - 1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        ObservableList<FirstLevelDivision> divisions = DBFirstLevelDivision.getFirstLevelDivisionsByCountry(countrySelection.getValue().getId());
+        firstLevelDivisionSelection.setItems(divisions);
         firstLevelDivisionSelection.setCellFactory(listView -> new DivisionListCell());
         firstLevelDivisionSelection.setButtonCell(new DivisionListCell());
+
+        try {
+            FirstLevelDivision f = DBFirstLevelDivision.getDivision(oldCustomer.getDivisionID());
+            for(FirstLevelDivision F : divisions) {
+                if(f.getDivisionID() == F.getDivisionID()) {
+                    firstLevelDivisionSelection.getSelectionModel().select(F);
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         countrySelection.valueProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null) {
@@ -80,6 +109,14 @@ public class AddCustomer implements Initializable {
                 firstLevelDivisionSelection.getSelectionModel().selectFirst();
             }
         });
+
+//        try {
+//            countrySelection.getSelectionModel().select();
+//            firstLevelDivisionSelection.getSelectionModel().select(DBCustomer.getDivisionID(oldCustomer.getID()));
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+
     }
 
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
@@ -92,6 +129,8 @@ public class AddCustomer implements Initializable {
     }
 
     public void onAddButton(ActionEvent actionEvent) throws SQLException, IOException {
+
+        int customerID = Integer.parseInt(idField.getText());
 
         String name = nameField.getText();
         if(name.isBlank()) {
@@ -139,7 +178,7 @@ public class AddCustomer implements Initializable {
 
         int divisionID = firstLevelDivisionSelection.getValue().getDivisionID();
 
-        int rowsAffected = DBCustomer.insert(name, address, postalCode, phone, divisionID);
+        int rowsAffected = DBCustomer.update(customerID, name, address, postalCode, phone, divisionID);
 
         if(rowsAffected != 0) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
@@ -156,6 +195,5 @@ public class AddCustomer implements Initializable {
     }
 
     public void onCountrySelect(ActionEvent actionEvent) {
-
     }
 }

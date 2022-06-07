@@ -6,15 +6,15 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phone;
-    private String division;
+    private int divisionID;
 
-    public Customer(int ID, String name, String address, String postalCode, String phone, String division) {
+    public Customer(int ID, String name, String address, String postalCode, String phone, int divisionID) {
         this.ID = ID;
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.division = division;
+        this.divisionID = divisionID;
     }
 
     public int getID() {
@@ -37,7 +37,7 @@ public class Customer {
         return phone;
     }
 
-    public String getDivision() {
-        return division;
+    public int getDivisionID() {
+        return divisionID;
     }
 }

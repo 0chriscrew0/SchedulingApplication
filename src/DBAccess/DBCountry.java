@@ -37,6 +37,18 @@ public class DBCountry {
         return countryList;
     }
 
+    public static Country getCountry(int countryID) throws SQLException {
+        String sql = "SELECT * FROM Countries WHERE Country_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, countryID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        int newID = rs.getInt("Country_ID");
+        String country = rs.getString("Country");
+        Country c = new Country(newID, country);
+        return c;
+    }
+
     public static void checkDateConversion() {
         System.out.println("CREATE DATE TEST");
         String sql = "SELECT Create_Date FROM Countries";

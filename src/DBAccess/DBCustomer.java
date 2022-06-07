@@ -11,6 +11,15 @@ import java.sql.SQLException;
 
 public class DBCustomer {
 
+    public static int getDivisionID(int customerID) throws SQLException {
+        String sql = "SELECT Division_ID FROM Customers WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, customerID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        return rs.getInt("Division_ID");
+    }
+
     public static Customer select(int customerID) throws SQLException {
         String sql = "SELECT * FROM Customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -24,7 +33,7 @@ public class DBCustomer {
         int divisionID = rs.getInt("Division_ID");
         String division = DBFirstLevelDivision.getDivision(divisionID).getDivision();
 
-        Customer c = new Customer(customerID, name, address, postalCode, phone, division);
+        Customer c = new Customer(customerID, name, address, postalCode, phone, divisionID);
         return c;
     }
 
@@ -47,7 +56,7 @@ public class DBCustomer {
                 int divisionID = rs.getInt("Division_ID");
                 String division = DBFirstLevelDivision.getDivision(divisionID).getDivision();
 
-                Customer c = new Customer(customerID, name, address, postalCode, phone, division);
+                Customer c = new Customer(customerID, name, address, postalCode, phone, divisionID);
                 customerList.add(c);
             }
         } catch(SQLException throwables) {
@@ -70,11 +79,15 @@ public class DBCustomer {
         return rowsAffected;
     }
 
-    public static int update(int customerID, String name) throws SQLException {
-        String sql = "UPDATE Customers SET Customer_Name = ? WHERE Customer_ID = ?";
+    public static int update(int customerID, String name, String address, String postalCode, String phone, int divisionID) throws SQLException {
+        String sql = "UPDATE Customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setString(1, name);
-        ps.setInt(2, customerID);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        ps.setInt(5, divisionID);
+        ps.setInt(6, customerID);
 
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
