@@ -85,7 +85,7 @@ public class AddCustomer implements Initializable {
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 630);
+        Scene scene = new Scene(root, 1660, 630);
         stage.setTitle("Scheduling Application");
         stage.setScene(scene);
         stage.show();

@@ -36,9 +36,22 @@ public class Home implements Initializable {
     public TableColumn<Customer, String> customerDivisionColumn;
     public Button updateCustomerButton;
     public Button deleteCustomerButton;
+    public TableView appointmentsTable;
+    public TableColumn appointmentIDColumn;
+    public TableColumn appointmentTitleColumn;
+    public TableColumn appointmentDescriptionColumn;
+    public TableColumn appointmentLocationColumn;
+    public TableColumn appointmentContactColumn;
+    public TableColumn appointmentTypeColumn;
+    public TableColumn appointmentStartColumn;
+    public TableColumn appointmentEndColumn;
+    public TableColumn appointmentCustomerIDColumn;
+    public TableColumn appointmentUserIDColumn;
+    public Button createAppointmentButton;
+    public Button updateAppointmentButton;
+    public Button cancelAppointmentButton;
 
     private static Customer selectedCustomer = null;
-
 
     public static Customer getSelectedCustomer() { return selectedCustomer; }
 
@@ -103,5 +116,20 @@ public class Home implements Initializable {
             }
 
         }
+    }
+
+    public void onCreateAppointment(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/CreateAppointment.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1000, 630);
+        stage.setTitle("Create Appointment");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void onUpdateAppointment(ActionEvent actionEvent) {
+    }
+
+    public void onCancelAppointment(ActionEvent actionEvent) {
     }
 }

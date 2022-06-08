@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateAppointment">
+   <children>
+      <TextField layoutX="38.0" layoutY="61.0" promptText="Title" />
+      <TextField layoutX="38.0" layoutY="255.0" promptText="Location" />
+      <TextArea layoutX="38.0" layoutY="96.0" prefHeight="147.0" prefWidth="149.0" promptText="Description" />
+      <TextField layoutX="38.0" layoutY="326.0" promptText="Type" />
+      <DatePicker layoutX="213.0" layoutY="61.0" />
+      <DatePicker layoutX="213.0" layoutY="102.0" />
+      <ComboBox layoutX="38.0" layoutY="290.0" prefWidth="150.0" />
+      <ComboBox layoutX="213.0" layoutY="175.0" prefWidth="150.0" />
+      <ComboBox layoutX="213.0" layoutY="231.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
