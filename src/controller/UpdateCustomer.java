@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class UpdateCustomer implements Initializable {
 
     public Button cancelButton;
-    public Button addButton;
+    public Button updateButton;
     public TextField idField;
     public TextField nameField;
     public TextField addressField;
@@ -109,14 +109,6 @@ public class UpdateCustomer implements Initializable {
                 firstLevelDivisionSelection.getSelectionModel().selectFirst();
             }
         });
-
-//        try {
-//            countrySelection.getSelectionModel().select();
-//            firstLevelDivisionSelection.getSelectionModel().select(DBCustomer.getDivisionID(oldCustomer.getID()));
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-
     }
 
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
@@ -128,9 +120,9 @@ public class UpdateCustomer implements Initializable {
         stage.show();
     }
 
-    public void onAddButton(ActionEvent actionEvent) throws SQLException, IOException {
+    public void onUpdateButton(ActionEvent actionEvent) throws SQLException, IOException {
 
-        int customerID = Integer.parseInt(idField.getText());
+        int customerID = oldCustomer.getID();
 
         String name = nameField.getText();
         if(name.isBlank()) {
@@ -192,8 +184,5 @@ public class UpdateCustomer implements Initializable {
             errorAlert.setHeaderText("Insert Failed");
             errorAlert.setContentText("There was a problem and the customer was not added.\nPlease try again.");
         }
-    }
-
-    public void onCountrySelect(ActionEvent actionEvent) {
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import DBAccess.DBCountry;
 import DBAccess.DBCustomer;
 import DBAccess.DBFirstLevelDivision;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -11,10 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -24,6 +22,7 @@ import model.FirstLevelDivision;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Home implements Initializable {
@@ -87,6 +86,22 @@ public class Home implements Initializable {
         }
     }
 
-    public void onDeleteCustomer(ActionEvent actionEvent) {
+    public void onDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+        selectedCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+        if(selectedCustomer != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Customer");
+            alert.setHeaderText("You are about to delete this customer");
+            alert.setContentText("Are you sure you want to delete this customer?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                DBCustomer.delete(selectedCustomer.getID());
+                customerTable.setItems(DBCustomer.getAllCustomers());
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+
+        }
     }
 }
