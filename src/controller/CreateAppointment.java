@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -175,8 +176,10 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return;
         }
+
+        String startDate;
         if(startDateField.getValue() != null) {
-            String startDate = startDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            startDate = startDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if(startDate.isBlank()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Appointment Input Error");
@@ -196,8 +199,9 @@ public class CreateAppointment implements Initializable {
             return;
         }
 
+        String endDate;
         if(endDateField.getValue() != null) {
-            String endDate = endDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            endDate = endDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if(endDate.isBlank()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Appointment Input Error");
@@ -228,6 +232,16 @@ public class CreateAppointment implements Initializable {
             return;
         }
 
+        if(!startTime.matches("^\\d{2}:\\d{2}$")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Appointment Input Error");
+            alert.setHeaderText("Start Time Field Invalid");
+            alert.setContentText("Make sure time follows xx:xx format");
+
+            alert.showAndWait();
+            return;
+        }
+
         String endTime = endTimeField.getText();
         if(endTime.isBlank()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -239,6 +253,35 @@ public class CreateAppointment implements Initializable {
             return;
         }
 
+        if(!endTime.matches("^\\d{2}:\\d{2}$")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Appointment Input Error");
+            alert.setHeaderText("End Time Field Invalid");
+            alert.setContentText("Make sure time follows xx:xx format");
 
+            alert.showAndWait();
+            return;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        String startString = startDate + " " + startTime;
+        LocalDateTime start = LocalDateTime.parse(startString, formatter);
+
+        String endString = endDate + " " + endTime;
+        LocalDateTime end = LocalDateTime.parse(endString, formatter);
+
+        System.out.println("Start: " + start);
+        System.out.println("End: " + end);
+
+        if(start.isAfter(end)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Appointment Input Error");
+            alert.setHeaderText("Time Fields Invalid");
+            alert.setContentText("Make sure end time is after start time");
+
+            alert.showAndWait();
+            return;
+        }
     }
 }
