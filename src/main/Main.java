@@ -14,6 +14,7 @@ import model.Customer;
 import model.User;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class Main extends Application {
@@ -23,18 +24,6 @@ public class Main extends Application {
         stage.setTitle("Login");
         stage.setScene(new Scene(root, 800, 600));
         stage.show();
-
-//        ObservableList<Country> countriesList = DBCountry.getAllCountries();
-//        for (Country C : countriesList) {
-//            System.out.println("Country ID: " + C.getId() + " Country Name: " + C.getName());
-//        }
-
-//        DBCountry.checkDateConversion();
-
-//        ObservableList<User> userList = DBUser.getAllUsers();
-//        for(User U : userList) {
-//            System.out.println("User ID: " + U.getUserId() + " Username: " + U.getUsername() + " Password: " + U.getPassword());
-//        }
     }
 
     public static void main(String[] args) throws SQLException {
