@@ -1,9 +1,6 @@
 package controller;
 
-import DBAccess.DBContact;
-import DBAccess.DBCountry;
-import DBAccess.DBCustomer;
-import DBAccess.DBUser;
+import DBAccess.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,10 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Contact;
-import model.Country;
-import model.Customer;
-import model.User;
+import model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,9 +26,9 @@ public class CreateAppointment implements Initializable {
     public TextField typeField;
     public DatePicker startDateField;
     public DatePicker endDateField;
-    public ComboBox contactSelection;
-    public ComboBox customerSelection;
-    public ComboBox userSelection;
+    public ComboBox<Contact> contactSelection;
+    public ComboBox<Customer> customerSelection;
+    public ComboBox<User> userSelection;
     public TextField startTimeField;
     public TextField endTimeField;
 
@@ -131,7 +125,7 @@ public class CreateAppointment implements Initializable {
         stage.show();
     }
 
-    public void onSchedule(ActionEvent actionEvent) {
+    public void onSchedule(ActionEvent actionEvent) throws SQLException, IOException {
 
         String title = titleField.getText();
         if(title.isBlank()) {
@@ -282,6 +276,25 @@ public class CreateAppointment implements Initializable {
 
             alert.showAndWait();
             return;
+        }
+
+        int customerID = customerSelection.getValue().getID();
+        int userID = userSelection.getValue().getUserId();
+        int contactID = contactSelection.getValue().getID();
+
+        int rowsAffected = DBAppointment.insert(title, description, location, type, start, end, customerID, userID, contactID);
+
+        if(rowsAffected != 0) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1000, 630);
+            stage.setTitle("Scheduling Application");
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Insert Failed");
+            errorAlert.setContentText("There was a problem and the appointment was not added.\nPlease try again.");
         }
     }
 }
