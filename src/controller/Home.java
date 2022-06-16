@@ -1,8 +1,6 @@
 package controller;
 
-import DBAccess.DBCountry;
-import DBAccess.DBCustomer;
-import DBAccess.DBFirstLevelDivision;
+import DBAccess.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.Appointment;
+import model.Contact;
 import model.Customer;
 import model.FirstLevelDivision;
 
@@ -41,12 +41,12 @@ public class Home implements Initializable {
     public TableColumn appointmentTitleColumn;
     public TableColumn appointmentDescriptionColumn;
     public TableColumn appointmentLocationColumn;
-    public TableColumn appointmentContactColumn;
+    public TableColumn<Appointment, String> appointmentContactColumn;
     public TableColumn appointmentTypeColumn;
     public TableColumn appointmentStartColumn;
     public TableColumn appointmentEndColumn;
-    public TableColumn appointmentCustomerIDColumn;
-    public TableColumn appointmentUserIDColumn;
+    public TableColumn<Appointment, String> appointmentCustomerIDColumn;
+    public TableColumn<Appointment, String> appointmentUserIDColumn;
     public Button createAppointmentButton;
     public Button updateAppointmentButton;
     public Button cancelAppointmentButton;
@@ -73,7 +73,28 @@ public class Home implements Initializable {
                 throwables.printStackTrace();
             }
 
-                return new ReadOnlyStringWrapper(f.getDivision());
+            return new ReadOnlyStringWrapper(f.getDivision());
+        });
+
+        appointmentsTable.setItems(DBAppointment.getAllAppointments());
+        appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        appointmentTitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        appointmentDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        appointmentLocationColumn.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        appointmentStartColumn.setCellValueFactory(new PropertyValueFactory<>("Start"));
+        appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("End"));
+        appointmentCustomerIDColumn.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        appointmentUserIDColumn.setCellValueFactory(new PropertyValueFactory<>("UserID"));
+        appointmentContactColumn.setCellValueFactory(cd -> {
+            int contactID = cd.getValue().getContactID();
+            Contact c = new Contact(1, "", "");
+            try {
+                c = DBContact.select(contactID);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            return new ReadOnlyStringWrapper(c.getName());
         });
     }
 
