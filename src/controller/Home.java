@@ -52,6 +52,9 @@ public class Home implements Initializable {
 
     private static Customer selectedCustomer = null;
     private static Appointment selectedAppointment = null;
+    public RadioButton allApointmentsSelection;
+    public RadioButton monthAppointmentSelection;
+    public RadioButton weekAppointmentSelection;
 
     public static Customer getSelectedCustomer() { return selectedCustomer; }
     public static Appointment getSelectedAppointment() { return selectedAppointment; }
@@ -187,5 +190,17 @@ public class Home implements Initializable {
                 // ... user chose CANCEL or closed the dialog
             }
         }
+    }
+
+    public void onAllApointments(ActionEvent actionEvent) {
+        appointmentsTable.setItems(DBAppointment.getAllAppointments());
+    }
+
+    public void onMonthAppointments(ActionEvent actionEvent) throws SQLException {
+        appointmentsTable.setItems(DBAppointment.getAppointmentsWithinMonth());
+    }
+
+    public void onWeekAppointments(ActionEvent actionEvent) throws SQLException {
+        appointmentsTable.setItems(DBAppointment.getAppointmentsWithinWeek());
     }
 }

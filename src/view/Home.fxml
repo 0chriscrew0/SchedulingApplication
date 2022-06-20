@@ -46,5 +46,11 @@
       <Button fx:id="createAppointmentButton" layoutX="702.0" layoutY="554.0" mnemonicParsing="false" onAction="#onCreateAppointment" text="Create Appointment" />
       <Button fx:id="updateAppointmentButton" layoutX="843.0" layoutY="554.0" mnemonicParsing="false" onAction="#onUpdateAppointment" text="Update Appointment" />
       <Button fx:id="cancelAppointmentButton" layoutX="1443.0" layoutY="554.0" mnemonicParsing="false" onAction="#onCancelAppointment" text="Cancel Appointment" />
+      <RadioButton fx:id="allApointmentsSelection" layoutX="852.0" layoutY="48.0" mnemonicParsing="false" onAction="#onAllApointments" selected="true" text="All">
+         <toggleGroup>
+            <ToggleGroup fx:id="appointmentSort" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="monthAppointmentSelection" layoutX="908.0" layoutY="48.0" mnemonicParsing="false" onAction="#onMonthAppointments" text="By  Month" toggleGroup="$appointmentSort" />
+      <RadioButton fx:id="weekAppointmentSelection" layoutX="998.0" layoutY="48.0" mnemonicParsing="false" onAction="#onWeekAppointments" text="By Week" toggleGroup="$appointmentSort" />
    </children>
 </AnchorPane>

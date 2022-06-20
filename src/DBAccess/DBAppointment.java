@@ -148,6 +148,66 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    public static ObservableList<Appointment> getAppointmentsWithinWeek() throws SQLException {
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM Appointments WHERE Start BETWEEN DATE_ADD(CURDATE(), INTERVAL - WEEKDAY(CURDATE()) DAY) AND NOW()";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int ID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+
+                Appointment a = new Appointment(ID, title, description, location, type, start.toLocalDateTime(), end.toLocalDateTime(), ID, userID, contactID);
+                appointments.add(a);
+            }
+        } catch (SQLException throwables)  {
+            throwables.printStackTrace();
+        }
+
+        return appointments;
+
+    }
+
+    public static ObservableList<Appointment> getAppointmentsWithinMonth() throws SQLException {
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM Appointments WHERE month(Start) = month(current_date()) and year(Start) = year(current_date())";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int ID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+
+                Appointment a = new Appointment(ID, title, description, location, type, start.toLocalDateTime(), end.toLocalDateTime(), ID, userID, contactID);
+                appointments.add(a);
+            }
+        } catch (SQLException throwables)  {
+            throwables.printStackTrace();
+        }
+
+        return appointments;
+
+    }
+
     public static int insert(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID) throws SQLException {
         String sql = "INSERT INTO Appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
