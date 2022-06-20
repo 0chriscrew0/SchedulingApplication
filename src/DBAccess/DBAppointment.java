@@ -300,8 +300,6 @@ public class DBAppointment {
         ps.setString(1, type);
         ps.setInt(2, appointmentMonth);
         ResultSet rs = ps.executeQuery();
-        System.out.println(rs.next());
-        System.out.println(rs.getInt("Total"));
         return rs.getInt("Total");
     }
 }

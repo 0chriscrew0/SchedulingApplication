@@ -106,4 +106,13 @@ public class DBCustomer {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
+
+    public static int getNumberCustomersByDivision(int divisionID) throws SQLException {
+        String sql = "SELECT COUNT(Division_ID) AS Total FROM Customers WHERE Division_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, divisionID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        return rs.getInt("Total");
+    }
 }
