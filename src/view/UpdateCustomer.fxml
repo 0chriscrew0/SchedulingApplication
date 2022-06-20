@@ -15,6 +15,6 @@
         <ComboBox fx:id="firstLevelDivisionSelection" layoutX="225.0" layoutY="194.0" prefWidth="150.0" />
         <Label layoutX="225.0" layoutY="86.0" text="Country" />
         <Label layoutX="225.0" layoutY="161.0" text="First-Level Division" />
-      <TextField fx:id="idField" layoutX="46.0" layoutY="42.0" promptText="ID" />
+      <TextField fx:id="idField" disable="true" editable="false" layoutX="46.0" layoutY="42.0" promptText="ID" />
     </children>
 </AnchorPane>
