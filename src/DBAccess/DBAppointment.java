@@ -26,14 +26,83 @@ public class DBAppointment {
                 String description = rs.getString("Description");
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
-                Date start = rs.getDate("Start");
-                Date end = rs.getDate("End");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
 
                 Timestamp timeStart = new Timestamp(start.getTime());
-                Timestamp timeEnd = new Timestamp(start.getTime());
+                Timestamp timeEnd = new Timestamp(end.getTime());
+
+                Appointment a = new Appointment(ID, title, description, location, type, timeStart.toLocalDateTime(), timeEnd.toLocalDateTime(), customerID, userID, contactID);
+                appointmentList.add(a);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return appointmentList;
+    }
+
+    public static ObservableList<Appointment> getAppointments(int customerID) {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM Appointments WHERE Customer_ID = ?";
+
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int ID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+
+                Timestamp timeStart = new Timestamp(start.getTime());
+                Timestamp timeEnd = new Timestamp(end.getTime());
+
+                Appointment a = new Appointment(ID, title, description, location, type, timeStart.toLocalDateTime(), timeEnd.toLocalDateTime(), customerID, userID, contactID);
+                appointmentList.add(a);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return appointmentList;
+    }
+
+    public static ObservableList<Appointment> getAppointments(int customerID, int appointmentID) {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM Appointments WHERE Customer_ID = ? AND Appointment_ID <> ?";
+
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+            ps.setInt(2, appointmentID);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int ID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+
+                Timestamp timeStart = new Timestamp(start.getTime());
+                Timestamp timeEnd = new Timestamp(end.getTime());
 
                 Appointment a = new Appointment(ID, title, description, location, type, timeStart.toLocalDateTime(), timeEnd.toLocalDateTime(), customerID, userID, contactID);
                 appointmentList.add(a);

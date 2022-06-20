@@ -1,6 +1,8 @@
 package controller;
 
 import DBAccess.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,10 +16,10 @@ import model.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class CreateAppointment implements Initializable {
     public TextField titleField;
@@ -29,8 +31,8 @@ public class CreateAppointment implements Initializable {
     public ComboBox<Contact> contactSelection;
     public ComboBox<Customer> customerSelection;
     public ComboBox<User> userSelection;
-    public TextField startTimeField;
-    public TextField endTimeField;
+    public ComboBox<LocalTime> startTimeSelection;
+    public ComboBox<LocalTime> endTimeSelection;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,9 +51,40 @@ public class CreateAppointment implements Initializable {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
 
-                setDisable(empty || date.compareTo(today) < 0 || startDateField.getValue() == null || date.isBefore(startDateField.getValue()));
+                setDisable(empty || date.compareTo(today) < 0 || startDateField.getValue() == null || !date.isEqual(startDateField.getValue()));
             }
         });
+
+        LocalDate easternDate = LocalDate.of(2000, 01, 01);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        LocalTime easternOpenTime = LocalTime.of(8, 00);
+        ZonedDateTime openEastern = ZonedDateTime.of(easternDate, easternOpenTime, ZoneId.of("America/New_York"));
+        ZonedDateTime open = openEastern.withZoneSameInstant(ZoneId.of(TimeZone.getDefault().getID()));
+
+        LocalTime easternCloseTime = LocalTime.of(22, 00);
+        ZonedDateTime closeEastern = ZonedDateTime.of(easternDate, easternCloseTime, ZoneId.of("America/New_York"));
+        ZonedDateTime close = closeEastern.withZoneSameInstant(ZoneId.of(TimeZone.getDefault().getID()));
+
+        while(open.isBefore(close)) {
+            startTimeSelection.getItems().add(open.toLocalTime());
+            endTimeSelection.getItems().add(open.toLocalTime());
+            open = open.plusMinutes(30);
+        }
+
+        startTimeSelection.getSelectionModel().selectFirst();
+        endTimeSelection.getSelectionModel().selectFirst();
+
+        startTimeSelection.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            ObservableList<LocalTime> localTimes = FXCollections.observableArrayList();
+            LocalTime i = newValue;
+            while(i.isBefore(close.toLocalTime())) {
+                localTimes.add(i);
+                i = i.plusMinutes(30);
+            }
+            endTimeSelection.setItems(localTimes);
+            endTimeSelection.getSelectionModel().selectFirst();
+        }));
 
         try {
             contactSelection.setItems(DBContact.getAllContacts());
@@ -171,108 +204,56 @@ public class CreateAppointment implements Initializable {
             return;
         }
 
-        String startDate;
-        if(startDateField.getValue() != null) {
-            startDate = startDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if(startDate.isBlank()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Appointment Input Error");
-                alert.setHeaderText("Start Date Field Invalid");
-                alert.setContentText("Be sure that the start date field is formatted correctly");
+        if(startDateField.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Appointment Input Error");
+            alert.setHeaderText("Start date Field Invalid");
+            alert.setContentText("Please pick a start date");
 
-                alert.showAndWait();
-                return;
+            alert.showAndWait();
+            return;
+        }
+
+        if(endDateField.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Appointment Input Error");
+            alert.setHeaderText("End date Field Invalid");
+            alert.setContentText("Please pick a end date");
+
+            alert.showAndWait();
+            return;
+        }
+
+        LocalDateTime start = LocalDateTime.of(startDateField.getValue(), startTimeSelection.getValue());
+        LocalDateTime end = LocalDateTime.of(endDateField.getValue(), endTimeSelection.getValue());
+
+        ObservableList<Appointment> customerAppointments = DBAppointment.getAppointments(customerSelection.getValue().getID());
+        boolean overlap = false;
+        for(Appointment A : customerAppointments) {
+            LocalDateTime oldStart = A.getStart();
+            LocalDateTime oldEnd = A.getEnd();
+
+            System.out.println(oldStart);
+            System.out.println(oldEnd);
+
+            if((start.isAfter(oldStart) || start.isEqual(oldStart)) && start.isBefore(oldEnd)) {
+                overlap = true;
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("Start Date Field Invalid");
-            alert.setContentText("Start date field should contain a value");
 
-            alert.showAndWait();
-            return;
-        }
-
-        String endDate;
-        if(endDateField.getValue() != null) {
-            endDate = endDateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if(endDate.isBlank()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Appointment Input Error");
-                alert.setHeaderText("End Date Field Invalid");
-                alert.setContentText("Be sure that the end date field is formatted correctly");
-
-                alert.showAndWait();
-                return;
+            if(end.isAfter(oldStart) && (end.isBefore(oldEnd) || end.isEqual(oldEnd))) {
+                overlap = true;
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("End Date Field Invalid");
-            alert.setContentText("End date field should contain a value");
 
-            alert.showAndWait();
-            return;
+            if((start.isBefore(oldStart) || start.isEqual(oldStart)) && (end.isAfter(oldEnd) || end.isEqual(oldEnd))) {
+                overlap = true;
+            }
         }
 
-        String startTime = startTimeField.getText();
-        if(startTime.isBlank()) {
+        if(overlap) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("Start Time Field Invalid");
-            alert.setContentText("Start time field should contain a non-empty string");
-
-            alert.showAndWait();
-            return;
-        }
-
-        if(!startTime.matches("^\\d{2}:\\d{2}$")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("Start Time Field Invalid");
-            alert.setContentText("Make sure time follows xx:xx format");
-
-            alert.showAndWait();
-            return;
-        }
-
-        String endTime = endTimeField.getText();
-        if(endTime.isBlank()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("End Time Field Invalid");
-            alert.setContentText("End time field should contain a non-empty string");
-
-            alert.showAndWait();
-            return;
-        }
-
-        if(!endTime.matches("^\\d{2}:\\d{2}$")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("End Time Field Invalid");
-            alert.setContentText("Make sure time follows xx:xx format");
-
-            alert.showAndWait();
-            return;
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        String startString = startDate + " " + startTime;
-        LocalDateTime start = LocalDateTime.parse(startString, formatter);
-
-        String endString = endDate + " " + endTime;
-        LocalDateTime end = LocalDateTime.parse(endString, formatter);
-
-        System.out.println("Start: " + start);
-        System.out.println("End: " + end);
-
-        if(start.isAfter(end)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Appointment Input Error");
-            alert.setHeaderText("Time Fields Invalid");
-            alert.setContentText("Make sure end time is after start time");
+            alert.setHeaderText("Appointment Overlap");
+            alert.setContentText("Please ensure that the selected customer has no other appointments during this time.");
 
             alert.showAndWait();
             return;
@@ -287,7 +268,7 @@ public class CreateAppointment implements Initializable {
         if(rowsAffected != 0) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1000, 630);
+            Scene scene = new Scene(root, 1660, 630);
             stage.setTitle("Scheduling Application");
             stage.setScene(scene);
             stage.show();
