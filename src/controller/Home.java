@@ -134,6 +134,11 @@ public class Home implements Initializable {
             if (result.get() == ButtonType.OK){
                 DBCustomer.delete(selectedCustomer.getID());
                 customerTable.setItems(DBCustomer.getAllCustomers());
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Customer Deleted");
+                alert.setHeaderText("You successfully deleted the customer");
+                alert.setContentText("ID: " + selectedCustomer.getID() + "\nType: " + selectedCustomer.getName());
+                Optional<ButtonType> confirmationResult = alert.showAndWait();
             } else {
                 // ... user chose CANCEL or closed the dialog
             }
