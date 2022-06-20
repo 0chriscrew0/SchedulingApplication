@@ -13,14 +13,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ZoomEvent;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.User;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -65,7 +70,30 @@ public class Login implements Initializable {
                 break;
             }
         }
+
+        try {
+            File loginActivity = new File("login_activity.txt");
+            if (loginActivity.createNewFile()) {
+                System.out.println("File created: " + loginActivity.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
         if(validLogin) {
+            try {
+                FileWriter myWriter = new FileWriter("login_activity.txt", true);
+                myWriter.write("User " + currentUser.getUsername() + " successfully logged in at " + ZonedDateTime.now() + "\n");
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
             ObservableList<Appointment> userAppointments = DBAppointment.getAppointmentsByUser(Login.getCurrentUser().getUserId());
 
             for(Appointment A : userAppointments) {
@@ -85,6 +113,16 @@ public class Login implements Initializable {
             stage.setScene(scene);
             stage.show();
         } else {
+            try {
+                FileWriter myWriter = new FileWriter("login_activity.txt", true);
+                myWriter.write("User " + userNameField.getText() + " gave invalid log-in at " + ZonedDateTime.now() + "\n");
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
             if(Locale.getDefault().getLanguage().equals("fr")) {
