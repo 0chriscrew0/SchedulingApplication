@@ -162,6 +162,26 @@ public class Home implements Initializable {
         }
     }
 
-    public void onCancelAppointment(ActionEvent actionEvent) {
+    public void onCancelAppointment(ActionEvent actionEvent) throws SQLException {
+        selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
+        if(selectedAppointment != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Cancel Appointment");
+            alert.setHeaderText("You are about to cancel this appointment");
+            alert.setContentText("Are you sure you want to cancel this appointment?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                DBAppointment.delete(selectedAppointment.getID());
+                appointmentsTable.setItems(DBAppointment.getAllAppointments());
+                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Appointment Canceled");
+                alert.setHeaderText("You successfully canceled the appointment");
+                alert.setContentText("ID: " + selectedAppointment.getID() + "\nType: " + selectedAppointment.getType());
+                Optional<ButtonType> confirmationResult = alert.showAndWait();
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
     }
 }

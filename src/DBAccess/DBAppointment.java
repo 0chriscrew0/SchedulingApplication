@@ -146,4 +146,11 @@ public class DBAppointment {
 
         return ps.executeUpdate();
     }
+
+    public static int delete(int ID) throws SQLException {
+        String sql = "DELETE FROM Appointments WHERE Appointment_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, ID);
+        return ps.executeUpdate();
+    }
 }
