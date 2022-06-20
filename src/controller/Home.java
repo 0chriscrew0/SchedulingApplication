@@ -52,8 +52,10 @@ public class Home implements Initializable {
     public Button cancelAppointmentButton;
 
     private static Customer selectedCustomer = null;
+    private static Appointment selectedAppointment = null;
 
     public static Customer getSelectedCustomer() { return selectedCustomer; }
+    public static Appointment getSelectedAppointment() { return selectedAppointment; }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -148,7 +150,16 @@ public class Home implements Initializable {
         stage.show();
     }
 
-    public void onUpdateAppointment(ActionEvent actionEvent) {
+    public void onUpdateAppointment(ActionEvent actionEvent) throws IOException {
+        selectedAppointment = (Appointment) appointmentsTable.getSelectionModel().getSelectedItem();
+        if(selectedAppointment != null) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/UpdateAppointment.fxml"));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1000, 630);
+            stage.setTitle("Update Appointment");
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void onCancelAppointment(ActionEvent actionEvent) {

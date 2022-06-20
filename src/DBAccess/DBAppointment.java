@@ -129,4 +129,21 @@ public class DBAppointment {
 
         return ps.executeUpdate();
     }
+
+    public static int update(int ID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID) throws SQLException {
+        String sql = "UPDATE Appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, Contact_ID = ?, User_ID = ? WHERE Appointment_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setTimestamp(5, Timestamp.valueOf(start));
+        ps.setTimestamp(6, Timestamp.valueOf(end));
+        ps.setInt(7, customerID);
+        ps.setInt(8, contactID);
+        ps.setInt(9, userID);
+        ps.setInt(10, ID);
+
+        return ps.executeUpdate();
+    }
 }

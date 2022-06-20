@@ -35,4 +35,17 @@ public class DBUser {
 
         return userList;
     }
+
+    public static User select(int userID) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE User_ID = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, userID);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+        String username = rs.getString("User_Name");
+        String password = rs.getString("Password");
+
+        User u = new User(userID, username, password);
+        return u;
+    }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointment">
+    <children>
+        <TextField fx:id="titleField" layoutX="212.0" layoutY="61.0" promptText="Title" />
+        <TextField fx:id="locationField" layoutX="38.0" layoutY="293.0" promptText="Location" />
+        <TextArea fx:id="descriptionField" layoutX="39.0" layoutY="118.0" prefHeight="147.0" prefWidth="149.0" promptText="Description" />
+        <TextField fx:id="typeField" layoutX="416.0" layoutY="61.0" promptText="Type" />
+        <DatePicker fx:id="startDateField" editable="false" layoutX="213.0" layoutY="126.0" />
+        <DatePicker fx:id="endDateField" editable="false" layoutX="213.0" layoutY="179.0" />
+        <ComboBox fx:id="contactSelection" layoutX="39.0" layoutY="349.0" prefWidth="150.0" />
+        <ComboBox fx:id="customerSelection" layoutX="214.0" layoutY="232.0" prefWidth="150.0" />
+        <ComboBox fx:id="userSelection" layoutX="214.0" layoutY="293.0" prefWidth="150.0" />
+        <Label layoutX="212.0" layoutY="36.0" text="Title" />
+        <Label layoutX="415.0" layoutY="36.0" text="Type" />
+        <Label layoutX="36.0" layoutY="97.0" text="Description" />
+        <Label layoutX="36.0" layoutY="272.0" text="Location" />
+        <Label layoutX="36.0" layoutY="326.0" text="Contact" />
+        <Label layoutX="212.0" layoutY="106.0" text="Start Date" />
+        <Label layoutX="212.0" layoutY="162.0" text="End Date" />
+        <Label layoutX="212.0" layoutY="215.0" text="Customer" />
+        <Label layoutX="212.0" layoutY="272.0" text="User" />
+        <Label layoutX="415.0" layoutY="106.0" text="Start Time" />
+        <Label layoutX="415.0" layoutY="162.0" text="End Time" />
+        <Button layoutX="416.0" layoutY="349.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+        <Button layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
+        <ComboBox fx:id="startTimeSelection" layoutX="415.0" layoutY="126.0" prefWidth="150.0" />
+        <ComboBox fx:id="endTimeSelection" layoutX="415.0" layoutY="188.0" prefWidth="150.0" />
+      <TextField fx:id="idField" editable="false" layoutX="36.0" layoutY="61.0" />
+      <Label layoutX="36.0" layoutY="36.0" text="ID" />
+    </children>
+</AnchorPane>
