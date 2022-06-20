@@ -9,8 +9,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class is used to retrieve and update user information in the database
+ */
 public class DBUser {
 
+    /**
+     * Gets all of the users from the DB
+     * @return a list of all of the users in the DB
+     */
     public static ObservableList<User> getAllUsers() {
         ObservableList<User> userList = FXCollections.observableArrayList();
 
@@ -36,6 +43,12 @@ public class DBUser {
         return userList;
     }
 
+    /**
+     * Gets a speicific user from the DB given an ID
+     * @param userID the ID of the user to be returned
+     * @return the user of the given ID
+     * @throws SQLException
+     */
     public static User select(int userID) throws SQLException {
         String sql = "SELECT * FROM Users WHERE User_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);

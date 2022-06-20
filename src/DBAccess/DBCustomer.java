@@ -9,8 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class is used to retrieve and update customer information from the database
+ */
 public class DBCustomer {
 
+    /**
+     * Gets the division ID of a specific customer
+     * @param customerID the ID of the customer
+     * @return the ID of the division of the given customer
+     * @throws SQLException
+     */
     public static int getDivisionID(int customerID) throws SQLException {
         String sql = "SELECT Division_ID FROM Customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -20,6 +29,12 @@ public class DBCustomer {
         return rs.getInt("Division_ID");
     }
 
+    /**
+     * Gets a specific customer from the DB
+     * @param customerID the ID of the customer to retrieve
+     * @return the customer of the given ID
+     * @throws SQLException
+     */
     public static Customer select(int customerID) throws SQLException {
         String sql = "SELECT * FROM Customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -37,6 +52,10 @@ public class DBCustomer {
         return c;
     }
 
+    /**
+     * Gets all of the customer from the DB
+     * @return a list of all the customer in the DB
+     */
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
@@ -66,6 +85,16 @@ public class DBCustomer {
         return customerList;
     }
 
+    /**
+     * Inserts a new customer into the DB
+     * @param name the name of the customer
+     * @param address the address of the customer
+     * @param postalCode the postal code of the customer
+     * @param phone the phone number of the customer
+     * @param divisionID the ID of the division of the customer
+     * @return a number the represents the number of rows affected in the DB
+     * @throws SQLException
+     */
     public static int insert(String name, String address, String postalCode, String phone, int divisionID) throws SQLException {
         String sql = "INSERT INTO Customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -79,6 +108,17 @@ public class DBCustomer {
         return rowsAffected;
     }
 
+    /**
+     * Updates an exisiting customer in the DB
+     * @param customerID the existing ID of the customer
+     * @param name the new name of the customer
+     * @param address the new address of the customer
+     * @param postalCode the new postal code of the customer
+     * @param phone the new phone number of the customer
+     * @param divisionID the ID of the new division of the customer
+     * @return a number the represents the number of rows affected in the DB
+     * @throws SQLException
+     */
     public static int update(int customerID, String name, String address, String postalCode, String phone, int divisionID) throws SQLException {
         String sql = "UPDATE Customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -93,6 +133,12 @@ public class DBCustomer {
         return rowsAffected;
     }
 
+    /**
+     * Removes a customer from the DB
+     * @param customerID the ID of the customer to be removed
+     * @return a number the represents the number of rows affected in the DB
+     * @throws SQLException
+     */
     public static int delete(int customerID) throws SQLException {
         String sql = "DELETE FROM Customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -107,6 +153,12 @@ public class DBCustomer {
         return rowsAffected;
     }
 
+    /**
+     * Gets the number of customer within a given division
+     * @param divisionID the division to count customers from
+     * @return the number of customers within the given divisino
+     * @throws SQLException
+     */
     public static int getNumberCustomersByDivision(int divisionID) throws SQLException {
         String sql = "SELECT COUNT(Division_ID) AS Total FROM Customers WHERE Division_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);

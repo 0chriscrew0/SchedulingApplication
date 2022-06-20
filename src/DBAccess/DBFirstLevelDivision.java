@@ -7,8 +7,17 @@ import model.FirstLevelDivision;
 
 import java.sql.*;
 
+/**
+ * This class is used to retrieve and update division information from the database
+ */
 public class DBFirstLevelDivision {
 
+    /**
+     * Gets a division given the ID
+     * @param divisionID the ID of the division to be returned
+     * @return the division returned from the given ID
+     * @throws SQLException
+     */
     public static FirstLevelDivision getDivision(int divisionID) throws SQLException {
         String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -23,6 +32,11 @@ public class DBFirstLevelDivision {
         return f;
     }
 
+    /**
+     * Gets a list of divisions by a given country
+     * @param countryID the ID of the country to search divisions by
+     * @return a list of divisions of the given country
+     */
     public static ObservableList<FirstLevelDivision> getFirstLevelDivisionsByCountry(int countryID) {
         ObservableList<FirstLevelDivision> firstLevelDivisionList = FXCollections.observableArrayList();
 
@@ -48,6 +62,10 @@ public class DBFirstLevelDivision {
         return firstLevelDivisionList;
     }
 
+    /**
+     * Gets all of the divisions from the DB
+     * @return a list of all of the divisions from the DB
+     */
     public static ObservableList<FirstLevelDivision> getAllFirstLevelDivisions() {
         ObservableList<FirstLevelDivision> firstLevelDivisionList = FXCollections.observableArrayList();
 

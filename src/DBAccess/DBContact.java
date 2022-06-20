@@ -10,8 +10,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * This class is used to retrieve and update contact information from the database
+ */
 public class DBContact {
 
+    /**
+     * Gets all of the contacts from the DB
+     * @return a list of all contacts from the DB
+     * @throws SQLException
+     */
     public static ObservableList<Contact> getAllContacts() throws SQLException {
 
         ObservableList<Contact> contacts = FXCollections.observableArrayList();
@@ -32,6 +40,12 @@ public class DBContact {
         return contacts;
     }
 
+    /**
+     * Gets a specific contact from the DB
+     * @param contactID the ID of the contact to be returned
+     * @return the contact in the DB of the given ID
+     * @throws SQLException
+     */
     public static Contact select(int contactID) throws SQLException {
         String sql = "SELECT * FROM Contacts WHERE Contact_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);

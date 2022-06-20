@@ -10,8 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+/**
+ * This class is used to retrieve and update country information from the database
+ */
 public class DBCountry {
 
+    /**
+     * Gets a list of all of the countries in the DB
+     * @return a list of all of the countries in the DB
+     */
     public static ObservableList<Country> getAllCountries() {
 
         ObservableList<Country> countryList = FXCollections.observableArrayList();
@@ -37,6 +44,12 @@ public class DBCountry {
         return countryList;
     }
 
+    /**
+     * Gets a specific country from the DB
+     * @param countryID the ID of the country to be returned
+     * @return the country of the given ID
+     * @throws SQLException
+     */
     public static Country getCountry(int countryID) throws SQLException {
         String sql = "SELECT * FROM Countries WHERE Country_ID = ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -47,20 +60,5 @@ public class DBCountry {
         String country = rs.getString("Country");
         Country c = new Country(newID, country);
         return c;
-    }
-
-    public static void checkDateConversion() {
-        System.out.println("CREATE DATE TEST");
-        String sql = "SELECT Create_Date FROM Countries";
-        try {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                Timestamp ts = rs.getTimestamp("Create_Date");
-                System.out.println("CD: " + ts.toLocalDateTime().toString());
-            }
-        } catch(SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 }
