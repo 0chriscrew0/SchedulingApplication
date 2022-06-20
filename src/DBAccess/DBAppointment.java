@@ -79,6 +79,40 @@ public class DBAppointment {
         return appointmentList;
     }
 
+    public static ObservableList<Appointment> getAppointmentsByContact(int contactID) {
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM Appointments WHERE Contact_ID = ?";
+
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            ps.setInt(1, contactID);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int ID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int customerID = rs.getInt("Customer_ID");
+                int userID = rs.getInt("User_ID");
+
+                Timestamp timeStart = new Timestamp(start.getTime());
+                Timestamp timeEnd = new Timestamp(end.getTime());
+
+                Appointment a = new Appointment(ID, title, description, location, type, timeStart.toLocalDateTime(), timeEnd.toLocalDateTime(), customerID, userID, contactID);
+                appointmentList.add(a);
+            }
+        } catch(SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return appointmentList;
+    }
+
     public static ObservableList<Appointment> getAppointments(int customerID) {
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
