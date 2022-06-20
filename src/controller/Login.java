@@ -1,5 +1,6 @@
 package controller;
 
+import DBAccess.DBAppointment;
 import DBAccess.DBUser;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,12 +14,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -32,6 +34,10 @@ public class Login implements Initializable {
     public TextField passwordField;
     public Label userLocation;
     public Button loginButton;
+
+    private static User currentUser = null;
+
+    public static User getCurrentUser() { return currentUser; }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,10 +61,23 @@ public class Login implements Initializable {
         for(User U : userList) {
             if(U.getUsername().equals(userNameField.getText()) && U.getPassword().equals(passwordField.getText())) {
                 validLogin = true;
+                currentUser = U;
                 break;
             }
         }
         if(validLogin) {
+            ObservableList<Appointment> userAppointments = DBAppointment.getAppointmentsByUser(Login.getCurrentUser().getUserId());
+
+            for(Appointment A : userAppointments) {
+                if(A.getStart().toLocalTime().isAfter(LocalTime.now()) && A.getStart().toLocalTime().isBefore(LocalTime.now().plusMinutes(15))) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Upcoming Appointments");
+                    alert.setHeaderText("You have the following appointment starting within 15 minutes");
+                    alert.setContentText("ID: " + A.getID() + "\nStart Date: " + A.getStart().toLocalDate() + "\nStart Time: " + A.getStart().toLocalTime());
+                    alert.showAndWait();
+                }
+            }
+
             Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1660, 630);
