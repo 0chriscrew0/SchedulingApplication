@@ -98,6 +98,11 @@ public class DBCustomer {
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setInt(1, customerID);
 
+        String sql2 = "DELETE FROM APPOINTMENTS WHERE Customer_ID = ?";
+        PreparedStatement ps2 = DBConnection.getConnection().prepareStatement(sql2);
+        ps2.setInt(1, customerID);
+        ps2.executeUpdate();
+
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }

@@ -134,6 +134,7 @@ public class Home implements Initializable {
             if (result.get() == ButtonType.OK){
                 DBCustomer.delete(selectedCustomer.getID());
                 customerTable.setItems(DBCustomer.getAllCustomers());
+                appointmentsTable.setItems(DBAppointment.getAllAppointments());
                 Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Customer Deleted");
                 alert.setHeaderText("You successfully deleted the customer");
@@ -142,7 +143,6 @@ public class Home implements Initializable {
             } else {
                 // ... user chose CANCEL or closed the dialog
             }
-
         }
     }
 
