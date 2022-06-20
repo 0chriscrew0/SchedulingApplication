@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="630.0" prefWidth="1660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Home">
+<AnchorPane prefHeight="713.0" prefWidth="1660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Home">
    <children>
       <Button fx:id="addCustomerButton" defaultButton="true" layoutX="37.0" layoutY="554.0" mnemonicParsing="false" onAction="#onAddCustomerButton" text="Add Customer" />
       <TableView fx:id="customerTable" layoutX="37.0" layoutY="80.0" prefHeight="446.0" prefWidth="589.0">
@@ -52,5 +52,13 @@
          </toggleGroup></RadioButton>
       <RadioButton fx:id="monthAppointmentSelection" layoutX="908.0" layoutY="48.0" mnemonicParsing="false" onAction="#onMonthAppointments" text="By  Month" toggleGroup="$appointmentSort" />
       <RadioButton fx:id="weekAppointmentSelection" layoutX="998.0" layoutY="48.0" mnemonicParsing="false" onAction="#onWeekAppointments" text="By Week" toggleGroup="$appointmentSort" />
+      <Label layoutX="41.0" layoutY="602.0" text="Reports">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="37.0" layoutY="642.0" mnemonicParsing="false" onAction="#toReportOne" text="Total Appointments by Type &amp; Month" />
+      <Button layoutX="277.0" layoutY="642.0" mnemonicParsing="false" onAction="#toReportTwo" text="Appointments by Contact" />
+      <Button layoutX="445.0" layoutY="642.0" mnemonicParsing="false" onAction="#toReportThree" text="Total Customers by Country" />
    </children>
 </AnchorPane>

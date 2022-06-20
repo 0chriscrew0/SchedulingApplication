@@ -80,7 +80,7 @@ public class Login implements Initializable {
 
             Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1660, 630);
+            Scene scene = new Scene(root, 1660, 800);
             stage.setTitle("Appointment Scheduler");
             stage.setScene(scene);
             stage.show();

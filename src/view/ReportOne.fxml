@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="182.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportOne">
+   <children>
+      <Label layoutX="57.0" layoutY="37.0" text="Number of Appointments by Type and Month">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="typeSelector" layoutX="57.0" layoutY="94.0" prefWidth="150.0" />
+      <ComboBox fx:id="monthSelector" layoutX="225.0" layoutY="94.0" prefWidth="150.0" />
+      <Label fx:id="resultLabel" layoutX="474.0" layoutY="89.0" text="0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

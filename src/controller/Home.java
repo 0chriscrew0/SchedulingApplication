@@ -85,6 +85,7 @@ public class Home implements Initializable {
         appointmentTitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         appointmentDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("Description"));
         appointmentLocationColumn.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        appointmentTypeColumn.setCellValueFactory(new PropertyValueFactory<>("Type"));
         appointmentStartColumn.setCellValueFactory(new PropertyValueFactory<>("Start"));
         appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("End"));
         appointmentCustomerIDColumn.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
@@ -202,5 +203,32 @@ public class Home implements Initializable {
 
     public void onWeekAppointments(ActionEvent actionEvent) throws SQLException {
         appointmentsTable.setItems(DBAppointment.getAppointmentsWithinWeek());
+    }
+
+    public void toReportOne(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/ReportOne.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1000, 630);
+        stage.setTitle("Report One");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void toReportTwo(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/ReportTwo.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1000, 630);
+        stage.setTitle("Report Two");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void toReportThree(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/ReportThree.fxml"));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 1000, 630);
+        stage.setTitle("Report Three");
+        stage.setScene(scene);
+        stage.show();
     }
 }

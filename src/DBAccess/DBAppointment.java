@@ -247,4 +247,27 @@ public class DBAppointment {
         ps.setInt(1, ID);
         return ps.executeUpdate();
     }
+
+    public static ObservableList<String> getAppointmentTypes() throws SQLException {
+        String sql =  "SELECT DISTINCT Type From Appointments";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        ObservableList<String> types = FXCollections.observableArrayList();
+        while(rs.next()) {
+            types.add(rs.getString("Type"));
+        }
+        return types;
+    }
+
+    public static int getNumberAppointmentsByTypeAndMonth(String type, int appointmentMonth) throws SQLException {
+        String sql = "SELECT COUNT(Type) AS Total FROM Appointments WHERE Type = ? AND month(start) = ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, type);
+        ps.setInt(2, appointmentMonth);
+        ResultSet rs = ps.executeQuery();
+        System.out.println(rs.next());
+        System.out.println(rs.getInt("Total"));
+        return rs.getInt("Total");
+    }
 }
