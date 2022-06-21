@@ -11,8 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.stage.Stage;
-import model.Contact;
-import model.Country;
 import model.FirstLevelDivision;
 
 import java.io.IOException;
@@ -20,10 +18,26 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * This class implements the logic and functionality of the Report Three form.
+ */
 public class ReportThree implements Initializable {
+
+    /**
+     * The label for the result of the report
+     */
     public Label resultLabel;
+
+    /**
+     * Selects the division for the report
+     */
     public ComboBox<FirstLevelDivision> divisionSelection;
 
+    /**
+     * Prepares the form for user input and populates the division selector with the appropriate selections.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -63,6 +77,11 @@ public class ReportThree implements Initializable {
 
     }
 
+    /**
+     * Navigates the user back to the main form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onBack(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();

@@ -21,20 +21,56 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * This class implements the logic and functionality of the Update Customer form.
+ */
 public class UpdateCustomer implements Initializable {
 
-    public Button cancelButton;
-    public Button updateButton;
+    /**
+     * Text field for the ID of the customer
+     */
     public TextField idField;
+
+    /**
+     * Text field for the name of the customer
+     */
     public TextField nameField;
+
+    /**
+     * Text field for the address of the customer
+     */
     public TextField addressField;
+
+    /**
+     * Text field for the postal code of the customer
+     */
     public TextField postalCodeField;
+
+    /**
+     * Text field for the phone number of the customer
+     */
     public TextField phoneField;
+
+    /**
+     * Selector for the country of the customer
+     */
     public ComboBox<Country> countrySelection;
+
+    /**
+     * Selector for the division of the customer
+     */
     public ComboBox<FirstLevelDivision> firstLevelDivisionSelection;
 
+    /**
+     * Static variable to hold the info of the customer to be updated
+     */
     private static Customer oldCustomer = null;
 
+    /**
+     * Prepares the form for user input and populates the country and division selectors with the appropriate selections.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -111,6 +147,11 @@ public class UpdateCustomer implements Initializable {
         });
     }
 
+    /**
+     * Navigates the user back to the main form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -120,6 +161,12 @@ public class UpdateCustomer implements Initializable {
         stage.show();
     }
 
+    /**
+     * Performs error checking on a fields and updates the customer if valid.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void onUpdateButton(ActionEvent actionEvent) throws SQLException, IOException {
 
         int customerID = oldCustomer.getID();

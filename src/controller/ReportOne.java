@@ -1,7 +1,6 @@
 package controller;
 
 import DBAccess.DBAppointment;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,11 +16,31 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * This class implements the logic and functionality of the Report One form.
+ */
 public class ReportOne implements Initializable {
+
+    /**
+     * Selects the type of appointment for the report
+     */
     public ComboBox<String> typeSelector;
+
+    /**
+     * Selects the month of the appointment for the report
+     */
     public ComboBox<Integer> monthSelector;
+
+    /**
+     * Displays the result of the report
+     */
     public Label resultLabel;
 
+    /**
+     * Prepares the form for input and populates the Type and Month selectors with the appropriate selections.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -56,6 +75,11 @@ public class ReportOne implements Initializable {
         });
     }
 
+    /**
+     * Navigates the user back to the main form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onBack(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();

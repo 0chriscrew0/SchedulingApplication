@@ -13,7 +13,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ZoomEvent;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.User;
@@ -22,28 +21,78 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * This class implements the logic and functionality of the login form.
+ */
 public class Login implements Initializable {
+
+    /**
+     * Displays the header of the form
+     */
     public Label loginLabel;
+
+    /**
+     * Displays a label for the user's current zone ID
+     */
     public Label locationLabel;
+
+    /**
+     * Displays a label for the username field
+     */
     public Label usernameLabel;
+
+    /**
+     * Displays a label for the password field
+     */
     public Label passwordLabel;
+
+    /**
+     * Holds all of the user objects
+     */
     private ObservableList<User> userList;
+
+    /**
+     * Text field for the username
+     */
     public TextField userNameField;
+
+    /**
+     * Text field for the password
+     */
     public TextField passwordField;
+
+    /**
+     * Displays the user's current ZoneID
+     */
     public Label userLocation;
+
+    /**
+     * Logs in the user
+     */
     public Button loginButton;
 
+    /**
+     * Static variable to hold the current logged in user
+     */
     private static User currentUser = null;
 
+    /**
+     * This static method is used to retrieve information of the currently logged in user from different forms.
+     * @return The currently logged in user as a user object.
+     */
     public static User getCurrentUser() { return currentUser; }
 
+    /**
+     * Prepares the login form for user input and translates the form to French based on the user's locale settings.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userList = DBUser.getAllUsers();
@@ -61,6 +110,11 @@ public class Login implements Initializable {
         userLocation.setText(z.getId());
     }
 
+    /**
+     * Checks the current form information and logs in the user if valid. Tracks all login attempts and appends them to a .txt file.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void login(ActionEvent actionEvent) throws IOException {
         boolean validLogin = false;
         for(User U : userList) {

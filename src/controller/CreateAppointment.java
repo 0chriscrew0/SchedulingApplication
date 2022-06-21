@@ -21,19 +21,71 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/**
+ * This class implements the logic and functionality of the Create Appointment form.
+ */
 public class CreateAppointment implements Initializable {
+
+    /**
+     * Text field for the title of the appointment
+     */
     public TextField titleField;
+
+    /**
+     * Text field for the location of the appointment
+     */
     public TextField locationField;
+
+    /**
+     * Text field for the description of the appointment
+     */
     public TextArea descriptionField;
+
+    /**
+     * Text field for the type of the appointment
+     */
     public TextField typeField;
+
+    /**
+     * Date picker for the start date of the appointment
+     */
     public DatePicker startDateField;
+
+    /**
+     * Date picker for the end date of the appointment
+     */
     public DatePicker endDateField;
+
+    /**
+     * Contact selection for the appointment
+     */
     public ComboBox<Contact> contactSelection;
+
+    /**
+     * Customer selection for the appointment
+     */
     public ComboBox<Customer> customerSelection;
+
+    /**
+     * User selection for the appointment
+     */
     public ComboBox<User> userSelection;
+
+    /**
+     * Start time selection for the appointment
+     */
     public ComboBox<LocalTime> startTimeSelection;
+
+    /**
+     * End time selection for the appointment
+     */
     public ComboBox<LocalTime> endTimeSelection;
 
+    /**
+     * This method prepares the form for user input and populates the User, Contact, and Customer combo boxes with the appropriate selections.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -56,12 +108,9 @@ public class CreateAppointment implements Initializable {
         });
 
         LocalDate easternDate = LocalDate.of(2000, 01, 01);
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
         LocalTime easternOpenTime = LocalTime.of(8, 00);
         ZonedDateTime openEastern = ZonedDateTime.of(easternDate, easternOpenTime, ZoneId.of("America/New_York"));
         ZonedDateTime open = openEastern.withZoneSameInstant(ZoneId.of(TimeZone.getDefault().getID()));
-
         LocalTime easternCloseTime = LocalTime.of(22, 00);
         ZonedDateTime closeEastern = ZonedDateTime.of(easternDate, easternCloseTime, ZoneId.of("America/New_York"));
         ZonedDateTime close = closeEastern.withZoneSameInstant(ZoneId.of(TimeZone.getDefault().getID()));
@@ -149,6 +198,11 @@ public class CreateAppointment implements Initializable {
         userSelection.getSelectionModel().selectFirst();
     }
 
+    /**
+     * Navigates the user back to the main form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -158,6 +212,12 @@ public class CreateAppointment implements Initializable {
         stage.show();
     }
 
+    /**
+     * Does error checking for the current values in the form and schedules a new appointment if valid.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void onSchedule(ActionEvent actionEvent) throws SQLException, IOException {
 
         String title = titleField.getText();

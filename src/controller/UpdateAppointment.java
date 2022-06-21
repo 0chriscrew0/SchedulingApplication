@@ -23,27 +23,84 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/**
+ * This class implements the logic and functionality of the Update Appointment form.
+ */
 public class UpdateAppointment implements Initializable {
 
+    /**
+     * Text field for the ID of the appointment
+     */
     public TextField idField;
+
+    /**
+     * Text field for the title of the appointment
+     */
     public TextField titleField;
+
+    /**
+     * Text field for the location of the appointment
+     */
     public TextField locationField;
+
+    /**
+     * Text field for the description of the appointment
+     */
     public TextArea descriptionField;
+
+    /**
+     * Text field for the type of the appointment
+     */
     public TextField typeField;
+
+    /**
+     * Date picker for the start date of the appointment
+     */
     public DatePicker startDateField;
+
+    /**
+     * Date picker for the end date of the appointment
+     */
     public DatePicker endDateField;
+
+    /**
+     * Selector for the contact of the appointment
+     */
     public ComboBox<Contact> contactSelection;
+
+    /**
+     * Selector for the customer of the appointment
+     */
     public ComboBox<Customer> customerSelection;
+
+    /**
+     * Selector for the user of the appointment
+     */
     public ComboBox<User> userSelection;
+
+    /**
+     * Selector for the start time of the appointment
+     */
     public ComboBox<LocalTime> startTimeSelection;
+
+    /**
+     * Selector for the end time of the appointment
+     */
     public ComboBox<LocalTime> endTimeSelection;
 
+    /**
+     * Holds the information of the old appointment to be updated
+     */
     private static Appointment oldAppointment = null;
 
+    /**
+     * Prepares the form for user input and populates all fields with the info of the appointment to be updated.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -186,6 +243,11 @@ public class UpdateAppointment implements Initializable {
         }
     }
 
+    /**
+     * Naviagtes the user back to the main form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Home.fxml"));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -195,6 +257,12 @@ public class UpdateAppointment implements Initializable {
         stage.show();
     }
 
+    /**
+     * Performs appropriate error checking and updates the appointment if valid.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void onUpdate(ActionEvent actionEvent) throws SQLException, IOException {
         String title = titleField.getText();
         if(title.isBlank()) {
